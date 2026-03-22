@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>ዋልድባ ገዳም · ቅዱስ መጌጫ · የጎብኚ መግቢያ</title>
+    <!-- Google Fonts + modern serif/sans blend -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: #faf4e8;
+            color: #2a241e;
+            line-height: 1.5;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 250, 240, 0.96);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            padding: 0.9rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e1cfb5;
+        }
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        .logo {
+            font-size: 1.7rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #9b5e2c, #6e3f1c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            font-family: 'Merriweather', serif;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #4f3a28;
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .nav-links a:hover { color: #b46f3a; }
+        .logout-btn {
+            background: transparent;
+            color: #b46f3a;
+            border: 1.5px solid #b46f3a;
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+        .logout-btn:hover {
+            background: #b46f3a;
+            color: white;
+        }
+
+        /* main container */
+        .main-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 30px 24px 50px;
+            min-height: 70vh;
+        }
+
+        /* LOGIN CARD */
+        .login-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+        .login-card {
+            background: white;
+            border-radius: 36px;
+            padding: 42px 38px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 25px 40px -12px rgba(0,0,0,0.2);
+            border: 1px solid #e3cfb9;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .login-icon i { font-size: 2.8rem; color: #b6723e; margin-bottom: 12px; }
+        .login-header h2 { font-size: 1.8rem; font-weight: 700; color: #412e1e; }
+        .login-header p { color: #7a6248; font-size: 0.9rem; }
+        .input-group { margin-bottom: 22px; }
+        .input-group label { font-weight: 600; color: #4f3722; margin-bottom: 6px; display: block; }
+        .input-group input {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid #e5d5c2;
+            border-radius: 28px;
+            font-size: 1rem;
+            transition: 0.2s;
+            background: #fffdf9;
+        }
+        .input-group input:focus {
+            border-color: #b6723e;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(182, 114, 62, 0.2);
+        }
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(100deg, #b6723e, #945e30);
+            border: none;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(182,114,62,0.3); }
+        .demo-credentials {
+            margin-top: 26px;
+            background: #fef4e9;
+            padding: 18px 14px;
+            border-radius: 24px;
+            text-align: center;
+        }
+        .cred-box { 
+            display: flex; 
+            justify-content: center; 
+            gap: 20px; 
+            font-size: 0.85rem; 
+            font-family: monospace; 
+            color: #5e3e28; 
+            margin-top: 8px; 
+            flex-wrap: wrap;
+            background: #fff7f0;
+            padding: 6px 12px;
+            border-radius: 30px;
+            margin-bottom: 6px;
+        }
+        .cred-box strong { color: #b46f3a; }
+        .error-message {
+            background: #ffe3e0;
+            color: #c23d22;
+            padding: 10px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+        }
+        .success-note {
+            background: #e3f5e8;
+            color: #1f7840;
+            padding: 8px;
+            border-radius: 30px;
+            margin-top: 12px;
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        /* DASHBOARD (heritage content) */
+        .dashboard { display: none; }
+
+        /* heritage container (monastery full content) */
+        .heritage-container {
+            background: #fffef7;
+            border-radius: 40px;
+            box-shadow: 0 20px 35px -10px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 1px solid #ede1d2;
+        }
+        .heritage-header {
+            padding: 2rem 2rem 1rem 2rem;
+            background: linear-gradient(120deg, #fff8ef, #fef2e4);
+            border-bottom: 2px solid #e3cfb5;
+        }
+        .title-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 600;
+            color: #8b4b24;
+            font-family: 'Merriweather', serif;
+            background: #fff0e0;
+            display: inline-block;
+            padding: 0 12px;
+            border-radius: 40px;
+            border-left: 6px solid #b46f3a;
+        }
+        .badge {
+            background: #e5d5be;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #5b3a1e;
+        }
+        .grid-main {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 0;
+        }
+        @media (max-width: 780px) {
+            .grid-main { grid-template-columns: 1fr; }
+            .nav-container { flex-direction: column; }
+            h1 { font-size: 1.6rem; }
+            .login-card { padding: 32px 20px; }
+        }
+        .essence, .tarikaw-col {
+            padding: 1.8rem;
+        }
+        .essence { background: white; }
+        .tarikaw-col { background: #fefaf3; border-left: 1px solid #ede0d0; }
+        .insight-block {
+            background: #fef7ef;
+            padding: 1rem 1.3rem;
+            border-radius: 24px;
+            margin: 1.2rem 0;
+            border-left: 6px solid #bc7f4a;
+        }
+        .monastery-note {
+            background: #fff1e2;
+            padding: 1rem;
+            border-radius: 24px;
+            margin: 1.2rem 0;
+        }
+        .lseth-section {
+            padding: 1.8rem;
+            background: #fffbf5;
+            border-top: 1px solid #e7d7c4;
+            border-bottom: 1px solid #e7d7c4;
+        }
+        .lseth-section h2 {
+            background: #e7d7be;
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 40px;
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+        }
+        .site-footer {
+            background: #f0e6da;
+            padding: 1.5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #745e46;
+        }
+        .visitor-note {
+            background: #f5e7d9;
+            padding: 20px;
+            border-radius: 28px;
+            margin-top: 20px;
+            text-align: center;
+            border: 1px dashed #b6723e;
+        }
+        hr { margin: 1rem 0; border-color: #e1cfb5; }
+        .visitor-greeting {
+            background: #eedfcb;
+            padding: 8px 16px;
+            border-radius: 40px;
+            margin-top: 12px;
+            display: inline-block;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">⛰️ ታላቁ ዋልድባ · አብርንታንት</div>
+        <ul class="nav-links">
+            <li><a href="#" id="navHome">መነሻ / Home</a></li>
+            <li><a href="#" id="navAbout">ስለ ገዳሙ</a></li>
+            <li><a href="#" id="navContact">የጉብኝት መረጃ</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main-container">
+    <!-- LOGIN SECTION -->
+    <div id="loginSection" class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-icon"><i class="fas fa-landmark"></i></div>
+                <h2>ወደ ዋልድባ ገዳም እንኳን ደህና መጡ</h2>
+                <p>የጎብኚ መግቢያ · ታሪካዊ ቅርስ ይግቡ</p>
+            </div>
+            <div id="errorMsg" class="error-message"><i class="fas fa-exclamation-triangle"></i> የተሳሳተ ስም ወይም የይለፍ ቃል</div>
+            <div id="successMsg" class="success-note"><i class="fas fa-check-circle"></i> በተሳካ ሁኔታ ገብተዋል! ወደ ገዳም ግቢ እየተወሰዱ ነው...</div>
+            <form id="loginForm">
+                <div class="input-group"><label><i class="fas fa-user-pilgrim"></i> የተጠቃሚ ስም</label><input type="text" id="username" placeholder="ስምዎን ያስገቡ" required autocomplete="off"></div>
+                <div class="input-group"><label><i class="fas fa-key"></i> የይለፍ ቃል</label><input type="password" id="password" placeholder="ይለፍ ቃል" required></div>
+                <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> ወደ ገዳም ግቢ ግባ</button>
+            </form>
+            <div class="demo-credentials">
+                <p><i class="fas fa-info-circle"></i> ለጎብኚዎች የሙከራ መግቢያ</p>
+                <div class="cred-box"><span><strong>ስም:</strong> girma</span> <span><strong>ይለፍቃል:</strong> aduka@123</span></div>
+                <div class="cred-box"><span><strong>ስም:</strong> mekdes_visitor</span> <span><strong>ይለፍቃል:</strong> waldeba123</span></div>
+                <div class="cred-box"><span><strong>ስም:</strong> waldeba_zewud</span> <span><strong>ይለፍቃል:</strong> abune2025</span></div>
+                <div class="cred-box"><span><strong>ስም:</strong> አቡነ_ሳሙኤል</span> <span><strong>ይለፍቃል:</strong> Waldeba@2025</span></div>
+                <p style="font-size: 0.7rem; margin-top: 8px;"><i class="fas fa-keyboard"></i> ሁሉም ሰው ከላይ ካሉት መረጃዎች በመጠቀም መግባት ይችላል። ፊደላትን በትክክል (upper/lower case) ያስገቡ።</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD : full heritage content of Waldeba -->
+    <div id="dashboardSection" class="dashboard">
+        
+<div class="container">
+    <div class="heritage-header">
+        <div class="title-group">
+            <h1> ታላቁ አብርንታንት ዋልድባ ገዳም</h1>
+            <div class="badge"> ዋልድባ ገዳም  · ancient archive</div>
+        </div>
+        <p style="border-left: greenyellow; color: red;">"የመድኃኔዓለም ስሙ የተመሰገነ ይሁን።"</p>
+        <div class="sub">
+            የዋልድባ ገዳም (ዋልድባ አብርንታንት) በኢትዮጵያ ኦርቶዶክስ ተዋሕዶ ቤተክርስቲያን ታሪክ ውስጥ "የቅዱሳን መገኛ" እና "የመላእክት መነጋገሪያ" በመባል የሚታወቅ ታላቅ ስፍራ ነው። ስለ ገዳሙ ታሪክ እና ዝና ዋና ዋና ነጥቦች እነሆ፦
+        </div>
+    </div>
+
+    <div class="grid-main">
+        <!-- left column: ERIS + new abrentant context -->
+        <div class="insight-block">
+            <h2 style="color: brown; border: 1px  solid black; border-radius: 10px;"> <span>⛪</span> የገዳሙ ጥንታዊ ታሪክ እና ተአምራት</h2>
+
+            <div class="insight-block">
+                <p style="border-left:4px green;"> 1.<strong>የገዳሙ ጥንታዊ ታሪክ</strong> <br>
+                የዋልድባ ገዳም ታሪክ የሚጀምረው በ4ኛው ክፍለ ዘመን በነገሥታቱ በአብርሃ ወአጽብሃ ዘመን ነው።
+                   <br>
+              *አብርሃ ወአጽብሃ፦ እነዚህ ነገሥታት ክርስትናን በኢትዮጵያ ያስፋፉ ሲሆን፣ ዋልድባን እንደ አንድ ትልቅ የመንፈሳዊ ተጋድሎ ማዕከል መሠረቱት።
+              <br>
+
+            *አቡነ ሳሙኤል ዘዋልድባ፦ ገዳሙ ይበልጥ በዝና የናኘውና ሥርዓተ ገዳሙ የጠነከረው በ14ኛው ክፍለ ዘመን በጻድቁ አቡነ ሳሙኤል አማካኝነት ነው። ጻድቁ በዚያ በነበሩበት ወቅት አንበሳ ይጋልቡ እንደነበርና ብዙ ተአምራትን እንዳደረጉ ይነገራል።</p>
+            </div>
+            <div class="insight-block">
+                <strong>2. "ዋልድባ" የሚለው ስም ትርጉም</strong><br>
+                "ዋልድባ" የሚለው ስም ከሁለት ቃላት የተገኘ ነው ተብሎ ይታመናል፦ <br>
+             "ዋሊ" እና "ድባ"፦ "ዋሊ" ማለት በግዕዝ "ሸምበቆ" ወይም "ጥቅጥቅ ያለ ጫካ" ማለት ሲሆን፣ "ድባ" ደግሞ "ጋራ" ወይም "ኮረብታ" ማለት ነው። <br> ስለዚህ "ጥቅጥቅ ያለ ጫካ ያለበት ጋራ" የሚል ትርጉም ይኖረዋል። <br>
+
+             በሌላ በኩል ደግሞ "ዋሊ" የሚለው ቃል ለቅዱሳን የሚሰጥ ስም በመሆኑ "የቅዱሳን ኮረብታ" ተብሎ ይተረጎማል።
+            </div>
+         <div class="insight-block">
+            <p> <strong> 3. " የአቡነ ሳሙኤል ገድልና ተአምራት "</strong> የ
+      የገዳሙ ዝና ከአቡነ ሳሙኤል ዘዋልድባ ታሪክ ጋር የተቆራኘ ነው። <br> <strong>ጻድቁ በዋልድባ በርሃ ውስጥ        </strong>፦
+
+     ከአራዊት ጋር መኖራቸው፦ አንበሶችን እንደ ፈረስ ይጋልቡ፣ ነብሮችንም ይታዘዟቸው እንደነበር በገድላቸው ተጽፏል።
+
+    ጽኑ ተጋድሎ፦ በባሕር ውስጥ ቆመው በመጸለይና ለብዙ ዓመታት እህል ሳይቀምሱ በቅጠላቅጠል በመኖር የታወቁ አባት ናቸው።
+
+    የገባላቸው ቃል ኪዳን፦ "አጥንትህ ያረፈበትን፣ ገዳምህንም የረገጠውን እምርልሃለሁ" የሚል ቃል ኪዳን ከፈጣሪ እንደተሰጣቸው ይታመናል።</p>
+
+</div>
+<div class="insight-block">
+<div class="hr-light"></div>
+<p> 4.<strong> የግራኝ አሕመድ ወረራ እና የቅዱሳኑ ጥበቃ</strong> <br>
+በ16ኛው ክፍለ ዘመን በግራኝ አሕመድ ወረራ ወቅት ብዙ አብያተ ክርስቲያናት ሲቃጠሉ፣ ወደ ዋልድባ የመጣው ሰራዊት ገዳሙን ለማጥፋት ቢሞክርም፣ በተአምራዊ ሁኔታ መንገዱ ጠፍቶባቸውና በጭጋግ ተሸፍኖባቸው ሳይሳካላቸው እንደቀረ የታሪክ ጸሐፊዎች ይገልጻሉ። ይህም ገዳሙ በፈጣሪ ጥበቃ ስር መሆኑን ማሳያ ተደርጎ ይወሰዳል</p>
+
+<p> <strong> የማይረዳኖስ (Mayordanos) ጠበል </strong> <br> በዋልድባ ገዳም ውስጥ ከሚገኙ እጅግ ቅዱስና ተአምረኛ ተረፈ-ገነት (ከገነት የወረዱ) ተብለው ከሚታመኑ የውኃ አካላት አንዱ ነው። ስለ የማይረዳኖስ ጠበል ታሪክና መንፈሳዊ ትርጉም ዋና ዋና ነጥቦች እነሆ፦ <br>
+
+1.<strong> የማይረዳኖስ ትርጉምና አመጣጥ</strong> <br>
+<strong>"ማይረዳኖስ"</strong> የሚለው ስም "ማይ" (ውኃ) እና "ረዳኖስ" (ዮርዳኖስ) ከሚሉ ቃላት የተገኘ ሲሆን፣ ትርጉሙም "የዮርዳኖስ ውኃ" ማለት ነው። በገዳሙ ሥርዓትና ትውፊት መሠረት፣ ይህ ጸበል በረቂቅ ከእስራኤሉ የዮርዳኖስ ወንዝ ጋር የተገናኘና የዮርዳኖስ በረከት ያለበት ተደርጎ ይታመናል። <br>
+
+2. <strong> የታሪኩ መነሻ</strong> <br>
+የማይረዳኖስ ታሪክ ከጻድቁ አቡነ ሳሙኤል ዘዋልድባ ገድል ጋር በጥብቅ የተያያዘ ነው፦ <br>
+
+ጻድቁ አቡነ ሳሙኤል በዋልድባ በረሃ ውስጥ በጽኑ ተጋድሎ ላይ ሳሉ፣ መላእክት ከገነት ዕፅዋትንና ቅዱስ ውኃን (የዮርዳኖስን በረከት) አምጥተው በዚያ ቦታ ላይ እንዳፈሰሱት ይነገራል። <br>
+
+ቦታው መነኮሳቱ ለብዙ ዘመናት በጾምና በጸሎት የኖሩበት፣ የቀደሱበትና የባረኩት በመሆኑ ውኃው ተራ ውኃ ሳይሆን "የመላእክት መጠጥ" ተብሎ ይጠራል። <br>
+
+3. <strong> አስገራሚ ተአምራት</strong> <br>
+የማይረዳኖስ ጠበል በሚከተሉት ተአምራቱ ይታወቃል፦
+
+<strong>ፈውስ</strong>፦ ለማንኛውም ዓይነት በሽታ (በተለይ ለሥጋዊና ለመንፈሳዊ ደዌ) ፍጹም ፈውስ እንደሚሰጥ ይታመናል። ብዙ ሕሙማን ተጠምቀውበትና ጠጥተውት እንደሚድኑ ይነገራል። <br>
+
+<strong>ባሕርይው</strong>፦ ጠበሉ በጣም ጥልቅና ረቂቅ ነው። በአባቶች ዘንድ እንደሚነገረው፣ ጠበሉ እንደ ሰውየው እምነትና ቅድስና ይለያያል። ለከበሩ አባቶች እንደ ወተት ነጭ ሆኖ እንደሚታይ፣ ለኃጥአን ደግሞ እንደ ተራ ውኃ እንደሚመስል ይተረካል። <br>
+
+<strong>በረከት </strong>፦ ጠበሉን የቀመሰ ሰው ረሃብና ጥም እንደማይሰማው፣ በመንፈሳዊ ኃይል እንደሚሞላ ይነገራል። <br>
+
+</p>
+</div>
+        </div>
+
+        <!-- right column: historical Gedam + Tarikaw details -->
+        <div class="insight-block">
+            <h3 style="color: brown; border: 1px  solid black; border-radius: 10px;"><span>⛪</span>የዋልድባ ገዳም አባቶች ለምእመናን ያላቸው አቀባበል</h3><br>
+           <div class="insight-block">
+            <p style="border-left: brown;"> <strong> የዋልድባ ዝና (በግጥም) </strong> <br>
+                        የቅዱሳን መፍለቂያ፣ የንጹሐን አጸድ፣ <br>
+                        ዓለምን ንቆ፣ ወደ ሰማይ መንገድ፤ <br>
+                        አብርንታንት ዋልድባ፣ የኢትዮጵያ መመኪያ፣ <br>
+                        የመላእክት ከተማ፣ የጸሎት መድረኪያ። <br>
+                        አቡነ ሳሙኤል፣ አንበሳን የጋለቡ፣ <br>
+                        በበርሃው ጽናት፣ አጋንንትን የረቱ፤ <br>
+                        ስንቱ ቅዱስ አለፈ፣ በዚያ ቅዱስ መሬት፣<br>
+                        ለሀገር የሚማልድ፣ በቀንና በሌሊት።</p>
+                    </div>
+            <div class="monastery-note">
+                <div class="insight-block">
+                 <p> <strong>የጉዞው ርዝመትና ሰዓት
+በአማካይ የእግር ጉዞ፡</strong> <br> ከአዲ አርቃይ ተነስቶ አብርንታንት ለመድረስ በአማካይ ከ 8 እስከ 12 ሰዓታት የእግር መንገድ ይፈጃል። <br>
+
+<strong> የመንገዱ ሁኔታ </strong>፡ መንገዱ እጅግ ገደላገደል፣ ቁልቁለትና ዳገት የበዛበት ነው። በተለይ የሰሜን ተራሮች  አካል ስለሆነ ጉዞው አድካሚ ሊሆን ይችላል። <br>
+
+<strong> የአካባቢው ነዋሪዎች (ባሕታውያን)፡</strong> መንገዱን የለመዱትና በፍጥነት የሚጓዙ ሰዎች በ 6 እና 7 ሰዓታት ውስጥ ሊደርሱት ይችላሉ። <br> </p>
+            </div>
+            </div>
+            <div class="insight-block">
+            <p>1. <strong> የአመሠራረት ዘመን (መቼ ተመሠረተ?)</strong> <br>
+<strong>የዋልድባ ገዳም ታሪክ በሁለት ዋና ዋና ምዕራፎች ይከፈላል</strong>፦
+<br>
+<strong> የመጀመሪያው መሠረት (4ኛው ክፍለ ዘመን)</strong>፦ ገዳሙ የተመሠረተው በ4ኛው ክፍለ ዘመን (በ300ዎቹ ዓ.ም) በነገሥታቱ አብርሃ ወአጽብሃ ዘመን ነው። ነገሥታቱ ክርስትናን በኢትዮጵያ በስፋት ሲያስፋፉ፣ ዋልድባን ለባሕታውያንና ለጸሎት ምቹ ቦታ መሆኑን ተረድተው የመጀመሪያውን ቤተክርስቲያን አሳንጸዋል።
+<br>
+
+<strong> የሥርዓተ ገዳሙ መታደስ (14ኛው ክፍለ ዘመን)</strong>፦ ዛሬ ላለው ዝና እና ጥብቅ ሥርዓት የበቃው ግን በ14ኛው ክፍለ ዘመን በጻድቁ አቡነ ሳሙኤል ዘዋልድባ አማካኝነት ነው። ጻድቁ ወደ ዋልድባ በረሃ በመግባት የገዳሙን ሥርዓት አጥብቀውና አስፋፍተው መሥርተዋል። <br>
+
+2. <strong> የገዳሙ አወቃቀር (አራቱ ክፍሎች)</strong> <br>
+<strong>"ታላቁ ዋልድባ"</strong> የሚባለው በአራት ዋና ዋና ገዳማት የተዋቀረ ስለሆነ ነው፦ <br>
+
+<strong>ሰቋር</strong>፦ ትልቁና ጥንታዊው ክፍል ሲሆን፣ ለጸሎትና ለተጋድሎ የሚመረጥ ቦታ ነው። <br>
+
+<strong>ካሣት</strong>፦ በውስጡ ብዙ ዋሻዎችና ቅዱሳን የሚጋደሉበት ክፍል ነው። <br>
+
+<strong>ደብረ ሲና</strong>፦ በከፍተኛ ተራራ ላይ የሚገኝና በብቸኝነት ለሚጸለይበት ሱባኤ የታወቀ ነው።
+<br>
+<strong>አብርንታንት (አባ ሳሙኤል)</strong>፦ የጻድቁ አቡነ ሳሙኤል መካነ መቃብርና ዋናው መንፈሳዊ ማዕከል ነው <br></p>
+        </div>
+        <div class="insight-block">
+            <div class="hr-light"></div>
+            <p class="quiet"> <strong> ጠቃሚ ምክሮች</strong> <br>
+<strong> መሪ (Guide) መያዝ</strong> :መንገዱ ጥቅጥቅ ያለ ጫካና ገደላገደል ስለሆነ አካባቢውን የሚያውቅ ሰው ወይም መሪ መያዝ እጅግ አስፈላጊ ነው። <br>
+<strong> ውኃና ስንቅ</strong>፡ መንገዱ ረጅም ስለሆነ በቂ ውኃና ቆሎ ወይም ቀላል ስንቅ መያዝ ያስፈልጋል። <br>
+<strong> የገዳሙ ሥርዓት</strong>፡ ገዳሙ ጥብቅ ሥርዓት ያለው በመሆኑ፣ ሲቃረቡ ጫማ ማውለቅና ሥርዓተ ገዳሙን የጠበቀ ልብስ መልበስ እንዳይዘነጉ።  <br></p>
+<p> <strong> ሃሌ ሉያ"</strong> <br> የሚለው ቃል በዋልድባ ገዳምም ሆነ በጠቅላላው በቤተክርስቲያን ሥርዓት ውስጥ እጅግ መሠረታዊና ታላቅ ትርጉም ያለው የምስጋና ቃል ነው። ትርጉሙንና ምስጢሩን በአጭሩ እነሆ፦ <strong> "ሃሌ ሉያ":</strong> የሚለው ቃል የዕብራይስጥ ቃል ሲሆን፣ ቀጥተኛ ትርጉሙ "እግዚአብሔርን አመስግኑ" (Praise the Lord) ማለት ነው። <br>
+
+ሃሌ፦ አመስግኑ <br>
+
+ሉያ (ያ)፦ እግዚአብሔር <br>
+
+2.<strong> በዋልድባ ገዳም ያለው ትርጉም</strong>
+በዋልድባ የሚኖሩ ቅዱሳን አባቶች ዓለምን ትተው ሌሊትና ቀን የሚኖሩት ለምስጋና ነው። ለእነርሱ "ሃሌ ሉያ"፦  <br></p>
+        </div>
+        </div>
+    </div>
+
+    <!-- LSETH focused segment -->
+    <div class="lseth-section">
+        <h2>  <span>⛪</span>የዋልድባ ገዳም አባቶች ለምእመናን ያላቸው አቀባበል</h2>
+        
+<div class="insight-block">
+        
+         <p> የዋልድባ ገዳም አባቶች ለምእመናን ያላቸው አቀባበል እጅግ ትህትና የተሞላበት፣ መንፈሳዊ እና በወንድማማችነት ፍቅር የተቃኘ ነው። ምንም እንኳን ገዳሙ እጅግ ጥብቅና መነኮሳቱ ከዓለም የተለዩ ቢሆኑም፣ ወደ ገዳሙ የሚመጣን ምእመን የሚቀበሉበት መንገድ የራሱ የሆኑ ልዩ ገጽታዎች አሉት፦ <br>
+            <br>
+ 
+ 
+1.  <strong>በትህትና እና በፍቅር መቀበል</strong>
+የገዳሙ አባቶች እንግዳን እንደ እግዚአብሔር እንግዳ ነው የሚያዩት። አንድ ምእመን ወደ ገዳሙ ሲመጣ አባቶቹ ዝቅ ብለው እጅ በመንሳትና በመመረቅ ይቀበሉታል። "እንኳን ደህና መጣህ/ሽ" የሚለው አቀባበላቸው በቃል ብቻ ሳይሆን ከልብ በመነጨ መንፈሳዊ ሰላምታ ጭምር ነው።
+<br>
+
+
+2. <strong> የእግር እጥበት ሥርዓት </strong>
+በዋልድባና በሌሎች ጥንታውያን ገዳማት እንግዳ ሲመጣ በረጅሙ መንገድ ዝሎና ደክሞ ስለሚመጣ፣ አባቶቹ የእንግዳውን እግር የማጠብ ልማድ አላቸው። ይህ የሚያሳየው የአባቶቹን ትህትና እና እንግዳን የማክበር ጥልቅ መንፈሳዊ ትርጉም ነው።
+<br>
+
+
+
+3. <strong> መንፈሳዊ ምክርና ተግሣጽ </strong>
+ምእመናን ወደ ገዳሙ የሚሄዱት ለበረከትና ለንስሐ ስለሆነ፣ አባቶቹ ጊዜ ሰጥተው ያዳምጧቸዋል። ካላቸው መንፈሳዊ ተሞክሮ በመነሳት፦ <br>
+
+የሕይወት መመሪያ ይሰጣሉ። <br>
+
+በችግርና በጭንቀት ላሉት ተስፋን ይሰብካሉ። <br>
+
+ለንስሐ የመጡትን በመንፈሳዊ መንገድ ይመራሉ (ያናዝዛሉ)።
+<br>
+
+
+4. <strong> ያለውን ማካፈል (በረከት)</strong>
+ምንም እንኳን መነኮሳቱ ራሳቸው ሳርና ቅጠል፣ ወይም ቆሎ እየበሉ የሚጋደሉ ቢሆንም፣ እንግዳ ሲመጣ ግን ያላቸውን ጥቂት ነገር "በረከት ነው" ብለው ያካፍላሉ። ይህም በረከት ለምእመኑ ትልቅ መንፈሳዊ እርካታን ይሰጠዋል።
+<br>
+<br>
+
+
+5. <strong> ጸሎት ማድረስ </strong> <br>
+አንድ ምእመን ችግሩን ወይም የልቡን መሻት ለአባቶቹ ሲነግራቸው፣ "ስለ አንተ/አንቺ እንጸልያለን" ይላሉ። በዋልድባ አባቶች ጸሎት መታሰብ ደግሞ ለብዙ ምእመናን እንደ ትልቅ መሸሸጊያና መጽናኛ ይታያል።
+ <br>
+ <br>
+ <strong>ልዩ ማሳሰቢያ፦</strong>
+የዋልድባ ገዳም ጥብቅ ሥርዓት ስላለው፣ ምእመናን ወደዚያ ሲሄዱ የሚከተሉትን ነገሮች እንዲያከብሩ ይጠበቃል፦ <br>
+
+ <strong> ልብስ </strong>፦ ሥርዓተ ገዳሙን የጠበቀ (ያልተገለጠ) ልብስ መልበስ።
+ <br>
+
+ <strong> ጫማ</strong>፦ ወደ ተቀደሰው ግቢ ሲገባ ጫማ ማውለቅ።
+<br>
+<strong> ዝምታ</strong>፦ የገዳሙን ሰላምና ጸሎት ላለማወክ በዝምታና በጭምትነት መንቀሳቀስ።</p>
+<br>
+</div>
+</div>
+        <div class="insight-block" style="margin-top: 0.8rem;">
+             <h2 style="text-align: center; border: 1px solid green; background-color: orange;">  <span>⛪</span>የአብርንታንት ዋልድባ ገዳም ማጠቃለያ</h2>
+             <span>⛪</span><strong> የአብርንታንት ዋልድባ ገዳም ማጠቃለያ </strong><br>
+           <strong> 1. መሠረታዊ ታሪክ</strong>
+           <br>
+
+ <strong> መሥራች</strong>፦ <br>
+ በ4ኛው ክፍለ ዘመን በነገሥታቱ አብርሃ ወአጽብሃ ተመሠረተ። <br>
+
+ <strong> አደራጅ</strong>፦ <br> በ14ኛው ክፍለ ዘመን በጻድቁ አቡነ ሳሙኤል ዘዋልድባ አማካኝነት በታላቅ ገድልና ሥርዓት ታደሰ። <br>
+
+ <strong>ስሙ</strong>፦ <br> ዋልድባ ማለት "የቅዱሳን ኮረብታ" ወይም "ጥቅጥቅ ያለ ጫካ" ማለት ነው። <br>
+
+2. <strong> ድንቅ ተአምራት</strong> <br>
+
+ <strong>የአንበሳ አገልግሎት</strong>፦ አቡነ ሳሙኤል አንበሳን እንደ ፈረስ ይጋልቡ ነበር፤ አንበሳውም ለገዳሙ እንጨት በመሸከም ያገለግል ነበር።  <br>
+ <br>
+
+ <strong> የጠበል መፍለቅ</strong>፦ ጻድቁ በጸሎት ላይ እያሉ በመስቀላቸው መሬቱን መተው ያፈለቁት ጠበል ዛሬም ለፈውስ ይውላል። <br> 
+ <br>
+
+ <strong> የብርሃን ዋሻ</strong>፦ በሰቋር ዋሻ ውስጥ አባቶች ሲጸልዩ ያለምንም መብራት መለኮታዊ ብርሃን ይበራላቸዋል።
+<br>
+<br>
+3.  <strong>የገዳሙ ልዩ ሥርዓት</strong> <br>
+
+ <strong>ተጋድሎ</strong>፦ መነኮሳቱ ዓለምን የናቁ፣ ሳርና ቅጠል (ቆሎ) ብቻ እየተመገቡ ሌሊትና ቀን ለዓለም ሰላም የሚጸልዩ ናቸው። <br>
+
+ <strong>ቅድስና</strong>፦ ቦታው "የመላእክት ከተማ" ተብሎ የሚታወቅና ጫማ የማይደረግበት የተቀደሰ መሬት ነው።
+ <br>
+ <br>
+ <strong>አቀባበል</strong>፦ አባቶቹ ምእመናንን በትህትና፣ በእግር እጥበትና በመንፈሳዊ ምክር በታላቅ ፍቅር ይቀበላሉ።
+<br>
+<br>
+4.  <strong>መንፈሳዊ ፋይዳ</strong> <br>
+
+ዋልድባ ለኢትዮጵያ ኦርቶዶክስ ተዋሕዶ ቤተክርስቲያን "መመኪያ" እና የጥንካሬ ምልክት ነው።
+<br>
+
+"ስምህን የጠራውን፣ ገዳምህን የረገጠውን እምርልሃለሁ" የሚል ታላቅ የቃል ኪዳን ምድር ነው።
+<br>
+        </div>
+    </div>
+
+    <!-- footer: short website attribution, no action / no buttons -->
+    <div class="site-footer">
+        <span>✦ "ቅድስት ድንግል ማርያም ጸሎታችንን እና ልመናችንን ታሳርግልን፤ ኢትዮጵያ ሀገራችንን ሰላም ያድርግልን፣ ጠላቶቿን ያስገዛላት። በሰላም አስጀምሮ በሰላም ያስፈጽመን ልዑል እግዚአብሔር የተመሰገነ ይሁን።"<br>
+        <span class="quiet">historical notes synthesized from oral traditions & monastic bibliographic references — for contemplative purpose.</span><br>
+        <span style="font-size: 0.7rem;">"የታላቁ አብርንታት ገዳም ታሪክ በአጭሩ ይህንን ይመስላል..."</span>
+    </div>
+</div>
+
+<script>
+    // Updated credentials - added girma with exact password aduka@123 (case sensitive)
+    // Anyone can login using these exact credentials
+    const validCredentials = [
+        { username: "girma", password: "aduka@123", displayName: "ግርማ (እንኳን ደህና መጣህ)" },
+        { username: "mekdes_visitor", password: "waldeba123", displayName: "መክደስ ጎብኚ" },
+        { username: "waldeba_zewud", password: "abune2025", displayName: "ወልደ ዘውዱ" },
+        { username: "አቡነ_ሳሙኤል", password: "Waldeba@2025", displayName: "አቡነ ሳሙኤል (በረከት)" },
+        // Additional easy access for all users
+        { username: "guest", password: "guest123", displayName: "እንግዳ ጎብኚ" },
+        { username: "abune", password: "waldeba", displayName: "የገዳም አገልጋይ" }
+    ];
+
+    let currentUser = sessionStorage.getItem('loggedInUser');
+
+    function showLogin() {
+        document.getElementById('loginSection').style.display = 'flex';
+        document.getElementById('dashboardSection').style.display = 'none';
+        sessionStorage.removeItem('loggedInUser');
+        const logoutBtn = document.querySelector('.logout-btn');
+        if (logoutBtn) logoutBtn.remove();
+        // hide success message if visible
+        const successMsg = document.getElementById('successMsg');
+        if(successMsg) successMsg.style.display = 'none';
+    }
+
+    function showDashboard(userDisplay) {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('dashboardSection').style.display = 'block';
+        
+        // Add or update welcome greeting
+        let existingGreeting = document.querySelector('.visitor-greeting');
+        if(!existingGreeting){
+            const headerDiv = document.querySelector('.heritage-header');
+            const welcomeSpan = document.createElement('div');
+            welcomeSpan.className = 'visitor-greeting';
+            welcomeSpan.innerHTML = `<i class="fas fa-user-check"></i> እንኳን ደህና መጣህ/ሽ, ${userDisplay}! በዚህ ቅዱስ ፖርታል ተቀበልን። ጌታ ይባርክህ!`;
+            headerDiv.insertBefore(welcomeSpan, headerDiv.children[2]);
+        } else {
+            existingGreeting.innerHTML = `<i class="fas fa-user-check"></i> እንኳን ደህና መጣህ/ሽ, ${userDisplay}! በዚህ ቅዱስ ፖርታል ተቀበልን። ጌታ ይባርክህ!`;
+        }
+        addLogoutButton();
+    }
+
+    function addLogoutButton() {
+        const navContainer = document.querySelector('.nav-container');
+        if (!document.querySelector('.logout-btn')) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'logout-btn';
+            logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> ውጣ / Logout';
+            logoutBtn.onclick = function() {
+                sessionStorage.removeItem('loggedInUser');
+                showLogin();
+            };
+            navContainer.appendChild(logoutBtn);
+        }
+    }
+
+    // Login handler with case-sensitive exact matching
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value; // keep exact case
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        
+        // Exact match (case-sensitive for password, username case-insensitive but we keep as entered)
+        const user = validCredentials.find(cred => 
+            cred.username === username && cred.password === password
+        );
+        
+        if (user) {
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'block';
+            setTimeout(() => {
+                successMsg.style.display = 'none';
+                sessionStorage.setItem('loggedInUser', user.displayName);
+                showDashboard(user.displayName);
+            }, 800);
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        } else {
+            errorMsg.style.display = 'block';
+            successMsg.style.display = 'none';
+            setTimeout(() => { errorMsg.style.display = 'none'; }, 3000);
+        }
+    });
+
+    // Check existing session
+    if (currentUser) {
+        showDashboard(currentUser);
+    } else {
+        showLogin();
+    }
+
+    // Navigation handlers
+    document.getElementById('navHome').addEventListener('click', (e) => {
+        e.preventDefault();
+        if(sessionStorage.getItem('loggedInUser')) alert("በዋልድባ ዋና መግቢያ ላይ ነዎት። የገዳሙን ታሪክ ይመልከቱ።");
+        else alert("እባክዎ መጀመሪያ ይግቡ። ለጎብኚዎች ክፍት ነው።");
+    });
+    document.getElementById('navAbout').addEventListener('click', (e) => {
+        e.preventDefault();
+        if(sessionStorage.getItem('loggedInUser')) alert("ዋልድባ በ4ኛው ክፍለ ዘመን የተመሠረተ፣ በአቡነ ሳሙኤል የተከበረ ገዳም ነው።");
+        else alert("መረጃን ለማየት በመግቢያ ይግቡ።");
+    });
+    document.getElementById('navContact').addEventListener('click', (e) => {
+        e.preventDefault();
+        if(sessionStorage.getItem('loggedInUser')) alert("የገዳሙ ጉብኝት መረጃ: ከአዲ አርቃይ ተነስቶ በእግር 8-12 ሰአት፣ መሪ ያስፈልጋል። ልብስ ሥርዓታዊ ይሁን።");
+        else alert("እባክዎ በመግቢያ ቅጽ ይግቡ።");
+    });
+
+    // Observer for logout button
+    const observer = new MutationObserver(function() {
+        if (document.getElementById('dashboardSection').style.display === 'block') {
+            addLogoutButton();
+        } else {
+            const btn = document.querySelector('.logout-btn');
+            if (btn && !document.querySelector('.login-wrapper')?.contains(btn)) btn.remove();
+        }
+    });
+    observer.observe(document.getElementById('dashboardSection'), { attributes: true, attributeFilter: ['style'] });
+    addLogoutButton();
+</script>
+</body>
+</html>
